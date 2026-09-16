@@ -1,0 +1,15 @@
+{
+  "name": "producer",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "g-ae",
+  "type": "commonjs",
+  "main": "producer.js",
+  "scripts": {
+    "start": "KAFKAJS_NO_PARTITIONER_WARNING=1 node producer.js"
+  },
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  }
+}
