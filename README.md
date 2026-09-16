@@ -8,7 +8,7 @@ Small Kafka use-case for a demo in the **302 Data infrastructures** class.
 - NPM
 
 ## Running demo
-- Create Kafka broker and "orders" topic, setups npm packages for `consumer` and `producer` services
+- Create Kafka broker and "orders" topic (starts with 2 partitions by default), setup npm packages for `consumer` and `producer` services
 ```bash
 make
 ```
@@ -38,7 +38,7 @@ make start
 make start-consumer GROUP_ID=inventory
 ```
 
-- Open second worker on shipping for partition separation (horizontal scaling)​
+- Open second worker on `shipping` group for partition separation (horizontal scaling)​
 ```bash
 make start-consumer
 ```
