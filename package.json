@@ -1,0 +1,13 @@
+{
+  "name": "kafka-presentation-demo",
+  "version": "1.0.0",
+  "description": "Kafka presentation demo for 302 Data infrastructures class",
+  "scripts": {
+    "test": "node tests/integration.test.js"
+  },
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  },
+  "author": "g-ae",
+  "license": "MIT"
+}

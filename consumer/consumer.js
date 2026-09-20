@@ -8,7 +8,7 @@ const kafka = new Kafka({
   },
   logLevel: logLevel.ERROR
 });
-const consumerGroup = process.argv[2] || 'shipping'
+const consumerGroup = process.argv[2] || process.env.GROUP_ID || 'shipping'
 const consumer = kafka.consumer({ groupId: consumerGroup });
 
 async function run() {
@@ -24,7 +24,7 @@ async function run() {
       try {
         // add shipping logic
         // throw new Error("Shipping service is down!"); // simulate api crash (if enough time)
-        console.log(`[P${partition}] Processing order: ${order.order_id}, user: ${order.user_id}, total: ${order.total}`);
+        console.log(`[${consumerGroup}] [P${partition}] Processing order: ${order.order_id}, user: ${order.user_id}, total: ${order.total}`);
       } catch (err) {
         console.error(`[Erreur offset ${message.offset}]`, err.message);
       }

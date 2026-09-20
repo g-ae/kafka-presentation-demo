@@ -1,0 +1,65 @@
+name: Kafka Demo Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Integration Tests (Broker in Action)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Start Kafka Broker
+        run: |
+          docker compose up -d
+
+      - name: Wait for Kafka & Create Topic
+        run: |
+          echo "Waiting for Kafka broker to start..."
+          until docker exec kafka /opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list > /dev/null 2>&1; do
+            echo "Waiting for Kafka..."
+            sleep 2
+          done
+          echo "Kafka broker is ready!"
+
+          docker exec kafka /opt/kafka/bin/kafka-topics.sh \
+            --bootstrap-server localhost:9092 \
+            --create \
+            --if-not-exists \
+            --topic orders \
+            --partitions 2 \
+            --replication-factor 1
+
+          echo "Topic 'orders' verified:"
+          docker exec kafka /opt/kafka/bin/kafka-topics.sh \
+            --bootstrap-server localhost:9092 \
+            --describe \
+            --topic orders
+
+      - name: Run Integration Tests
+        run: |
+          npm test
+        env:
+          KAFKA_BROKER: localhost:9092
+          TOPIC_NAME: orders
+
+      - name: Stop Kafka
+        if: always()
+        run: |
+          docker compose down

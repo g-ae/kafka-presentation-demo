@@ -42,3 +42,13 @@ make start-consumer GROUP_ID=inventory
 ```bash
 make start-consumer
 ```
+
+## Running Tests (Failsafe Semi-Live Demo)
+Integration tests are configured to verify the Kafka broker in action and act as a failsafe semi-live demo.
+
+Tests are triggered automatically with GitHub Actions on every push.
+
+- **Run tests**:
+```bash
+make test
+```
